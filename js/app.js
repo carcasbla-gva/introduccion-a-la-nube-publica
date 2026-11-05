@@ -2,6 +2,7 @@
    Bilingüe (ca/es), temporitzador i mode fosc. */
 
 const topicGrid = document.getElementById("topic-grid");
+const unitGrid = document.getElementById("unit-grid");
 const startBtn = document.getElementById("start-btn");
 const shuffleInput = document.getElementById("shuffle");
 const countHint = document.getElementById("count-hint");
@@ -14,11 +15,13 @@ const quizSection = document.getElementById("quiz");
 const resultsSection = document.getElementById("results");
 const reviewSection = document.getElementById("review");
 const homeSection = document.getElementById("home");
+const unitsSection = document.getElementById("units");
 
 // ---------- Estat ----------
 let currentLang = safeGet("test-lang") || "ca";
 let currentTheme = safeGet("test-theme") || "light";
 
+let currentUnit = null; // 1 o 2
 let selectedTopics = new Set();
 let allQuestions = [];
 let currentIndex = 0;
@@ -32,10 +35,17 @@ let timerEnabled = false;
 // ---------- Traduccions de la interfície ----------
 const UI = {
   ca: {
-    siteTitle: "Test Tema 2",
+    siteTitle: "Tests de pràctica",
     siteSubtitle: "Introducció a la núvol pública · DAW",
-    pickTopics: "Triem els temes",
-    pickTopicsDesc: "Selecciona els temes del Tema 2 que vols practicar. Es generaran les preguntes dels temes escollits.",
+    pickUnit: "Tria una unitat",
+    pickUnitDesc: "Selecciona la unitat que vols practicar. Després podràs triar els temes.",
+    unit1Title: "Tema 1",
+    unit1Desc: "El núvol, models de servei i AWS",
+    unit2Title: "Tema 2",
+    unit2Desc: "Infraestructura global, IAM, EC2 i seguretat de xarxa",
+    backUnits: "Canviar d'unitat",
+    pickTopics: "Triem els temes del Tema {unit}",
+    pickTopicsDesc: "Selecciona els temes que vols practicar. Es generaran les preguntes dels temes escollits.",
     shuffle: "Mesclar preguntes",
     timerLabel: "Temps:",
     timerNone: "Sense límit",
@@ -53,10 +63,10 @@ const UI = {
     backHome: "Tornar a l'inici",
     confirmLeave: "Segur que vols abandonar el test? Perdràs les respostes.",
     resultsTitle: "Has finalitzat el test",
-    scoreText100: "Excel·lent! Has domanat el Tema 2.",
-    scoreText80: "Molt bé. Tens un bon nivell del Tema 2.",
+    scoreText100: "Excel·lent! Has domanat el test.",
+    scoreText80: "Molt bé. Tens un bon nivell.",
     scoreText60: "Aprovat, però pots millorar revisant els errors.",
-    scoreTextLow: "Cal revisar la teoria del Tema 2. Aním!",
+    scoreTextLow: "Cal revisar la teoria. Aním!",
     summaryTitle: "Resultat per tema",
     reviewTitle: "Revisió de respostes",
     yourAnswer: "La teva resposta:",
@@ -67,13 +77,20 @@ const UI = {
     restart: "Fer un altre test",
     reviewAnswers: "Revisar respostes",
     timeUp: "⏰ S'ha acabat el temps!",
-    footer: "Test de pràctica del Tema 2 · Introducció a la núvol pública · Mòdul opcional DAW"
+    footer: "Tests de pràctica · Introducció a la núvol pública · Mòdul opcional DAW"
   },
   es: {
-    siteTitle: "Test Tema 2",
+    siteTitle: "Tests de práctica",
     siteSubtitle: "Introducción a la nube pública · DAW",
-    pickTopics: "Elegimos los temas",
-    pickTopicsDesc: "Selecciona los temas del Tema 2 que quieres practicar. Se generarán las preguntas de los temas elegidos.",
+    pickUnit: "Elige una unidad",
+    pickUnitDesc: "Selecciona la unidad que quieres practicar. Después podrás elegir los temas.",
+    unit1Title: "Tema 1",
+    unit1Desc: "La nube, modelos de servicio y AWS",
+    unit2Title: "Tema 2",
+    unit2Desc: "Infraestructura global, IAM, EC2 y seguridad de red",
+    backUnits: "Cambiar de unidad",
+    pickTopics: "Elegimos los temas del Tema {unit}",
+    pickTopicsDesc: "Selecciona los temas que quieres practicar. Se generarán las preguntas de los temas elegidos.",
     shuffle: "Mezclar preguntas",
     timerLabel: "Tiempo:",
     timerNone: "Sin límite",
@@ -91,10 +108,10 @@ const UI = {
     backHome: "Volver al inicio",
     confirmLeave: "¿Seguro que quieres abandonar el test? Perderás las respuestas.",
     resultsTitle: "Has finalizado el test",
-    scoreText100: "¡Excelente! Has dominado el Tema 2.",
-    scoreText80: "Muy bien. Tienes un buen nivel del Tema 2.",
+    scoreText100: "¡Excelente! Has dominado el test.",
+    scoreText80: "Muy bien. Tienes un buen nivel.",
     scoreText60: "Aprobado, pero puedes mejorar revisando los errores.",
-    scoreTextLow: "Es necesario repasar la teoría del Tema 2. ¡Ánimo!",
+    scoreTextLow: "Es necesario repasar la teoría. ¡Ánimo!",
     summaryTitle: "Resultado por tema",
     reviewTitle: "Revisión de respuestas",
     yourAnswer: "Tu respuesta:",
@@ -105,11 +122,9 @@ const UI = {
     restart: "Hacer otro test",
     reviewAnswers: "Revisar respuestas",
     timeUp: "⏰ ¡Se ha acabado el tiempo!",
-    footer: "Test de práctica del Tema 2 · Introducción a la nube pública · Módulo opcional DAW"
+    footer: "Tests de práctica · Introducción a la nube pública · Módulo opcional DAW"
   }
 };
-
-const TOPICS = [...new Set(QUESTIONS.map((q) => q.topic.ca))];
 
 function t(key) {
   return UI[currentLang][key] || key;
@@ -124,6 +139,41 @@ function safeSet(key, value) {
 
 function optionText(opt) {
   return typeof opt === "object" ? opt[currentLang] : opt;
+}
+
+const UNITS = [
+  { id: 1, emoji: "☁️", titleKey: "unit1Title", descKey: "unit1Desc" },
+  { id: 2, emoji: "🌐", titleKey: "unit2Title", descKey: "unit2Desc" }
+];
+
+function unitQuestions(unit) {
+  return QUESTIONS.filter((q) => q.topic.unit === unit);
+}
+
+function renderUnits() {
+  unitGrid.innerHTML = "";
+  UNITS.forEach((u) => {
+    const count = unitQuestions(u.id).length;
+    const el = document.createElement("div");
+    el.className = "topic-card unit-card";
+    el.innerHTML = `
+      <button type="button" class="unit-open">
+        <span class="unit-emoji">${u.emoji}</span>
+        <span class="topic-name">${escapeHtml(t(u.titleKey))}</span>
+        <span class="topic-desc">${escapeHtml(t(u.descKey))}</span>
+        <span class="topic-desc">${topicCountLabel(count)}</span>
+      </button>
+    `;
+    el.querySelector("button").addEventListener("click", () => selectUnit(u.id));
+    unitGrid.appendChild(el);
+  });
+}
+
+function selectUnit(unitId) {
+  currentUnit = unitId;
+  selectedTopics = new Set();
+  renderTopics();
+  showSection(homeSection);
 }
 
 function topicCountLabel(n) {
@@ -153,7 +203,9 @@ function applyTheme() {
 function applyLanguage() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    if (UI[currentLang][key] !== undefined) el.textContent = UI[currentLang][key];
+    if (UI[currentLang][key] !== undefined) {
+      el.textContent = UI[currentLang][key].replace("{unit}", currentUnit ?? "");
+    }
   });
 
   document.querySelectorAll(".lang-btn").forEach((btn) => {
@@ -161,6 +213,7 @@ function applyLanguage() {
   });
 
   renderTopics();
+  renderUnits();
 
   if (!quizSection.classList.contains("hidden")) {
     renderQuestion();
@@ -173,8 +226,15 @@ function applyLanguage() {
 
 // ---------- Inicialització de temes ----------
 function renderTopics() {
+  // Titol de la pantalla amb la unitat actual
+  const titleEl = document.getElementById("topics-title");
+  if (titleEl && currentUnit) {
+    titleEl.textContent = t("pickTopics").replace("{unit}", currentUnit);
+  }
+
   topicGrid.innerHTML = "";
-  TOPICS.forEach((topicCa) => {
+  const unitTopics = [...new Set(unitQuestions(currentUnit).map((q) => q.topic.ca))];
+  unitTopics.forEach((topicCa) => {
     const qSample = QUESTIONS.find((q) => q.topic.ca === topicCa);
     const topicEs = qSample ? qSample.topic.es : topicCa;
     const count = QUESTIONS.filter((q) => q.topic.ca === topicCa).length;
@@ -530,8 +590,13 @@ function goHome() {
   stopTimer();
   timerDisplay.textContent = "∞";
   timerDisplay.classList.remove("urgent");
-  showSection(homeSection);
+  currentUnit = null;
+  selectedTopics = new Set();
+  renderUnits();
+  showSection(unitsSection);
 }
+
+document.getElementById("back-units").addEventListener("click", goHome);
 
 document.getElementById("restart-btn").addEventListener("click", goHome);
 document.getElementById("restart-review-btn").addEventListener("click", goHome);
@@ -549,5 +614,4 @@ function escapeHtml(text) {
 
 // ---------- Arrancada ----------
 applyTheme();
-renderTopics();
 applyLanguage();

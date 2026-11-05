@@ -224,6 +224,31 @@ p{ color:var(--muted); margin-bottom:12px; }
 
 .topic-card label{ cursor:pointer; }
 
+.unit-card .unit-open{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  width:100%;
+  border:none;
+  background:transparent;
+  font-family:inherit;
+  color:inherit;
+  text-align:left;
+  cursor:pointer;
+  padding:0;
+}
+
+.unit-card .unit-emoji{
+  font-size:1.9rem;
+  line-height:1;
+  margin-bottom:6px;
+}
+
+.unit-card:hover .unit-name{ color:var(--primary); }
+
+.unit-card .topic-name{ font-size:1.05rem; }
+
 .topic-name{
   display:block;
   font-weight:700;
