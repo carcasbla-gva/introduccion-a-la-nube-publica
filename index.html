@@ -1,21 +1,32 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="ca" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Test de pràctica del Tema 2 - Introducció a la núvol pública (DAW)">
 <title>Test Tema 2 - Introducció a la núvol pública</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header>
 <div class="container header-inner">
-<h1 data-i18n="siteTitle">Test Tema 2</h1>
-<p data-i18n="siteSubtitle">Introducció a la núvol pública &#183; DAW</p>
-<div class="lang-switch" id="lang-switch">
-  <button class="lang-btn active" data-lang="ca">Valenciano</button>
-  <button class="lang-btn" data-lang="es">Castellano</button>
-</div>
+  <div class="header-top">
+    <div class="brand">
+      <h1 data-i18n="siteTitle">Test Tema 2</h1>
+      <p data-i18n="siteSubtitle">Introducció a la núvol pública &#183; DAW</p>
+    </div>
+    <button id="theme-toggle" class="icon-btn" aria-label="Canviar tema" title="Mode clar / fosc">🌙</button>
+  </div>
+  <div class="header-toolbar">
+    <div class="lang-switch" id="lang-switch">
+      <button class="lang-btn active" data-lang="ca">Valenciano</button>
+      <button class="lang-btn" data-lang="es">Castellano</button>
+    </div>
+  </div>
 </div>
 </header>
 
@@ -23,26 +34,49 @@
 
 <!-- Pantalla inicial: selecció de temes -->
 <section id="home" class="card">
-<h2 data-i18n="pickTopics">Triem els temes</h2>
+<div class="card-head">
+  <span class="card-emoji">☁️</span>
+  <h2 data-i18n="pickTopics">Triem els temes</h2>
+</div>
 <p data-i18n="pickTopicsDesc">Selecciona els temes del Tema 2 que vols practicar. Es generaran les preguntes dels temes escollits.</p>
 
 <div class="topic-grid" id="topic-grid">
 </div>
 
 <div class="controls">
-<input type="checkbox" id="shuffle" checked>
-<label for="shuffle"><span data-i18n="shuffle">Mesclar preguntes</span></label>
+  <label class="switch-label">
+    <input type="checkbox" id="shuffle" checked>
+    <span data-i18n="shuffle">Mesclar preguntes</span>
+  </label>
+
+  <label class="select-label" for="timer-select">
+    <span data-i18n="timerLabel">Temps:</span>
+    <select id="timer-select">
+      <option value="0" data-i18n="timerNone">Sense límit</option>
+      <option value="10">10 min</option>
+      <option value="15">15 min</option>
+      <option value="20">20 min</option>
+      <option value="30">30 min</option>
+      <option value="45">45 min</option>
+    </select>
+  </label>
 </div>
 
-<button id="start-btn" class="btn btn-primary" disabled data-i18n="startBtn">Començar el test</button>
+<button id="start-btn" class="btn btn-primary btn-block" disabled data-i18n="startBtn">Començar el test</button>
 <p class="hint" id="count-hint">Selecciona almenys un tema per començar.</p>
 </section>
 
 <!-- Pantalla del test -->
 <section id="quiz" class="card hidden">
 <div class="quiz-header">
-<span id="progress-text"><span id="curr">1</span> <span data-i18n="of">/</span> <span id="total">1</span></span>
-<div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+  <div class="quiz-top">
+    <button id="home-btn" class="chip-btn" type="button">🏠 <span data-i18n="backHome">Tornar a l'inici</span></button>
+    <span id="timer" class="timer">∞</span>
+  </div>
+  <div class="quiz-meta">
+    <span id="progress-text"><span data-i18n="questionLabel">Pregunta</span> <span id="curr">1</span> <span data-i18n="of">/</span> <span id="total">1</span></span>
+  </div>
+  <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
 </div>
 
 <div id="question-container">
@@ -51,24 +85,28 @@
 <div id="options" class="options"></div>
 </div>
 
+<p id="feedback" class="feedback"></p>
+
 <div class="quiz-controls">
 <button id="prev-btn" class="btn btn-outline" disabled data-i18n="prevBtn">Anterior</button>
 <button id="next-btn" class="btn btn-primary" disabled data-i18n="nextBtn">Següent</button>
 </div>
-<p id="feedback" class="feedback"></p>
 </section>
 
 <!-- Pantalla de resultats -->
 <section id="results" class="card hidden">
-<h2 data-i18n="resultsTitle">&#127942; Has finalitzat el test</h2>
-<div class="score-big" id="score-big">0 / 0</p>
+<div class="card-head">
+  <span class="card-emoji">🏆</span>
+  <h2 data-i18n="resultsTitle">Has finalitzat el test</h2>
+</div>
+<div class="score-big" id="score-big">0 / 0</div>
 <div class="score-text" id="score-text"></div>
 <div class="chart-wrap">
 <canvas id="score-canvas" width="200" height="200"></canvas>
 </div>
 <div class="summary" id="summary"></div>
 
-<div class="controls">
+<div class="controls center">
 <button id="review-btn" class="btn btn-outline" data-i18n="reviewAnswers">Revisar respostes</button>
 <button id="restart-btn" class="btn btn-primary" data-i18n="restart">Fer un altre test</button>
 </div>
@@ -76,9 +114,12 @@
 
 <!-- Pantalla de revisió -->
 <section id="review" class="card hidden">
-<h2 data-i18n="reviewTitle">&#128208; Revisió de respostes</h2>
+<div class="card-head">
+  <span class="card-emoji">📝</span>
+  <h2 data-i18n="reviewTitle">Revisió de respostes</h2>
+</div>
 <div id="review-list"></div>
-<div class="controls">
+<div class="controls center">
 <button id="back-results-btn" class="btn btn-outline" data-i18n="backResults">Tornar als resultats</button>
 <button id="restart-review-btn" class="btn btn-primary" data-i18n="restartReview">Fer un altre test</button>
 </div>
@@ -93,6 +134,13 @@
 </footer>
 
 <script src="js/questions.js"></script>
+<script src="js/data-global.js"></script>
+<script src="js/data-resp.js"></script>
+<script src="js/data-iam.js"></script>
+<script src="js/data-ec2.js"></script>
+<script src="js/data-sg.js"></script>
+<script src="js/data-nacl.js"></script>
+<script src="js/data-net.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
