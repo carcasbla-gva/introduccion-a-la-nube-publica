@@ -10,8 +10,12 @@
 
 <header>
 <div class="container header-inner">
-<h1>&#128187; Test Tema 2</h1>
-<p>Introducció a la núvol pública &#183; DAW</p>
+<h1 data-i18n="siteTitle">Test Tema 2</h1>
+<p data-i18n="siteSubtitle">Introducció a la núvol pública &#183; DAW</p>
+<div class="lang-switch" id="lang-switch">
+  <button class="lang-btn active" data-lang="ca">Valenciano</button>
+  <button class="lang-btn" data-lang="es">Castellano</button>
+</div>
 </div>
 </header>
 
@@ -19,26 +23,25 @@
 
 <!-- Pantalla inicial: selecció de temes -->
 <section id="home" class="card">
-<h2>Triem els temes</h2>
-<p>Selecciona els temes del Tema 2 que vols practicar. Es generaran les preguntes dels temes escollits.</p>
+<h2 data-i18n="pickTopics">Triem els temes</h2>
+<p data-i18n="pickTopicsDesc">Selecciona els temes del Tema 2 que vols practicar. Es generaran les preguntes dels temes escollits.</p>
 
 <div class="topic-grid" id="topic-grid">
 </div>
 
 <div class="controls">
-<label>
-<input type="checkbox" id="shuffle" checked> Mesclar preguntes
-</label>
+<input type="checkbox" id="shuffle" checked>
+<label for="shuffle"><span data-i18n="shuffle">Mesclar preguntes</span></label>
 </div>
 
-<button id="start-btn" class="btn btn-primary" disabled>Començar el test</button>
+<button id="start-btn" class="btn btn-primary" disabled data-i18n="startBtn">Començar el test</button>
 <p class="hint" id="count-hint">Selecciona almenys un tema per començar.</p>
 </section>
 
 <!-- Pantalla del test -->
 <section id="quiz" class="card hidden">
 <div class="quiz-header">
-<span id="progress-text">Pregunta <span id="curr">1</span> / <span id="total">1</span></span>
+<span id="progress-text"><span id="curr">1</span> <span data-i18n="of">/</span> <span id="total">1</span></span>
 <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
 </div>
 
@@ -49,15 +52,15 @@
 </div>
 
 <div class="quiz-controls">
-<button id="prev-btn" class="btn btn-outline" disabled>Anterior</button>
-<button id="next-btn" class="btn btn-primary" disabled>Següent</button>
+<button id="prev-btn" class="btn btn-outline" disabled data-i18n="prevBtn">Anterior</button>
+<button id="next-btn" class="btn btn-primary" disabled data-i18n="nextBtn">Següent</button>
 </div>
 <p id="feedback" class="feedback"></p>
 </section>
 
 <!-- Pantalla de resultats -->
 <section id="results" class="card hidden">
-<h2>&#127942; Has finalitzat el test</h2>
+<h2 data-i18n="resultsTitle">&#127942; Has finalitzat el test</h2>
 <div class="score-big" id="score-big">0 / 0</p>
 <div class="score-text" id="score-text"></div>
 <div class="chart-wrap">
@@ -66,18 +69,18 @@
 <div class="summary" id="summary"></div>
 
 <div class="controls">
-<button id="review-btn" class="btn btn-outline">Revisar respostes</button>
-<button id="restart-btn" class="btn btn-primary">Fer un altre test</button>
+<button id="review-btn" class="btn btn-outline" data-i18n="reviewAnswers">Revisar respostes</button>
+<button id="restart-btn" class="btn btn-primary" data-i18n="restart">Fer un altre test</button>
 </div>
 </section>
 
 <!-- Pantalla de revisió -->
 <section id="review" class="card hidden">
-<h2>&#128208; Revisió de respostes</h2>
+<h2 data-i18n="reviewTitle">&#128208; Revisió de respostes</h2>
 <div id="review-list"></div>
 <div class="controls">
-<button id="back-results-btn" class="btn btn-outline">Tornar als resultats</button>
-<button id="restart-review-btn" class="btn btn-primary">Fer un altre test</button>
+<button id="back-results-btn" class="btn btn-outline" data-i18n="backResults">Tornar als resultats</button>
+<button id="restart-review-btn" class="btn btn-primary" data-i18n="restartReview">Fer un altre test</button>
 </div>
 </section>
 
@@ -85,7 +88,7 @@
 
 <footer>
 <div class="container">
-<p>Test de pràctica del Tema 2 &#183; Introducció a la núvol pública &#183; Mòdul opcional DAW</p>
+<p data-i18n="footer">Test de pràctica del Tema 2 &#183; Introducció a la núvol pública &#183; Mòdul opcional DAW</p>
 </div>
 </footer>
 
