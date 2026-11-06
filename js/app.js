@@ -579,7 +579,7 @@ themeToggle.addEventListener("click", () => {
 
 // ---------- Navegació ----------
 function showSection(section) {
-  [homeSection, quizSection, resultsSection, reviewSection].forEach((s) =>
+  [unitsSection, homeSection, quizSection, resultsSection, reviewSection].forEach((s) =>
     s.classList.add("hidden")
   );
   section.classList.remove("hidden");
