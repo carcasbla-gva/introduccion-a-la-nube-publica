@@ -1,5 +1,5 @@
 /* Base del banc de preguntes (bilingüe ca/es)
-   Cada tema té una propietat `unit` (1 o 2) per agrupar-los per unitat.
+   Cada tema té una propietat `unit` (1, 2 o 3) per agrupar-los per unitat.
    Els fitxers data-*.js afegeixen les preguntes a l'array QUESTIONS. */
 
 const QUESTIONS = [];
@@ -20,6 +20,14 @@ const T_EC2    = { unit: 2, ca: "Introducció a EC2", es: "Introducción a EC2" 
 const T_SG     = { unit: 2, ca: "Security Groups (SG)", es: "Security Groups (SG)" };
 const T_NACL   = { unit: 2, ca: "Network ACLs (NACL)", es: "Network ACLs (NACL)" };
 const T_NET    = { unit: 2, ca: "Seguretat de xarxa (SG vs NACL)", es: "Seguridad de red (SG vs NACL)" };
+
+// Temes Tema 3
+const T_VPC    = { unit: 3, ca: "VPC i subxarxes", es: "VPC y subredes" };
+const T_IGW    = { unit: 3, ca: "Internet Gateway i taules de rutes", es: "Internet Gateway y tablas de rutas" };
+const T_EIP    = { unit: 3, ca: "IP elàstica (Elastic IP)", es: "IP elástica (Elastic IP)" };
+const T_NAT    = { unit: 3, ca: "NAT Gateway", es: "NAT Gateway" };
+const T_DEF    = { unit: 3, ca: "SG i NACL a la VPC (defensa en capes)", es: "SG y NACL en la VPC (defensa en capas)" };
+const T_LAMBDA = { unit: 3, ca: "AWS Lambda (serverless)", es: "AWS Lambda (serverless)" };
 
 // Constructor de pregunta
 function Q(topic, question, options, correct, explanation) {

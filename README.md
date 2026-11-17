@@ -1,6 +1,6 @@
 # Tests de pràctica - Introducció a la núvol pública
 
-Web interactiva per practicar la teoria del mòdul opcional de DAW "Introducció a la núvol pública". Primer tries la **unitat** (Tema 1 o Tema 2) i després els **temes** que vols practicar.
+Web interactiva per practicar la teoria del mòdul opcional de DAW "Introducció a la núvol pública". Primer tries la **unitat** (Tema 1, Tema 2 o Tema 3) i després els **temes** que vols practicar.
 
 ## Tema 1 · Introducció al núvol i a AWS (76 preguntes)
 
@@ -21,9 +21,18 @@ Web interactiva per practicar la teoria del mòdul opcional de DAW "Introducció
 - Network ACLs (NACL): stateless, ALLOW i DENY, nivell de subnet, ordre de regles
 - Comparació SG vs NACL i funcionament conjunt
 
+## Tema 3 · Xarxes virtuals i serveis de còmput (110 preguntes)
+
+- VPC: xarxa virtual aïllada, rang CIDR, subxarxes públiques i privades
+- Internet Gateway (IGW) i taules de rutes (route tables)
+- IP elàstica (Elastic IP): IP pública fixa, reassociació i cost quan està inactiva
+- NAT Gateway: eixida a Internet de subxarxes privades, unidireccional i amb Elastic IP
+- SG i NACL a la VPC: defensa en capes i arquitectura de 3 capes (Web — App — DB)
+- AWS Lambda: serverless, esdeveniments, estateless, cold start, rol d'execució i integracions (S3, API Gateway, EventBridge, CloudWatch)
+
 ## Característiques
 
-- **194 preguntes** tipus test basades en la teoria dels dos temes
+- **304 preguntes** tipus test basades en la teoria dels tres temes
 - **Selecció d'unitat i de temes**: tries la unitat i després quins temes practicar
 - **Bilingüe valencià/castellà** amb selector d'idioma (es recorda)
 - **Temporitzador configurable**: sense límit, 10, 15, 20, 30 o 45 minuts
@@ -60,4 +69,10 @@ Es pot publicar amb **GitHub Pages**:
 - `js/data-sg.js` — Preguntes de Security Groups
 - `js/data-nacl.js` — Preguntes de Network ACLs
 - `js/data-net.js` — Preguntes de seguretat de xarxa (SG vs NACL)
+- `js/data-vpc.js` — Preguntes de VPC i subxarxes
+- `js/data-igw.js` — Preguntes d'Internet Gateway i taules de rutes
+- `js/data-eip.js` — Preguntes d'Elastic IP
+- `js/data-nat.js` — Preguntes de NAT Gateway
+- `js/data-defense.js` — Preguntes de SG i NACL a la VPC (defensa en capes)
+- `js/data-lambda.js` — Preguntes d'AWS Lambda
 - `js/app.js` — Lògica del test, temporitzador, idioma i tema

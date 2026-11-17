@@ -1,4 +1,4 @@
-/* Lògica del test - Tema 2 Introducció a la núvol pública
+/* Lògica del test - Introducció a la núvol pública
    Bilingüe (ca/es), temporitzador i mode fosc. */
 
 const topicGrid = document.getElementById("topic-grid");
@@ -21,7 +21,7 @@ const unitsSection = document.getElementById("units");
 let currentLang = safeGet("test-lang") || "ca";
 let currentTheme = safeGet("test-theme") || "light";
 
-let currentUnit = null; // 1 o 2
+let currentUnit = null; // 1, 2 o 3
 let selectedTopics = new Set();
 let allQuestions = [];
 let currentIndex = 0;
@@ -43,6 +43,8 @@ const UI = {
     unit1Desc: "El núvol, models de servei i AWS",
     unit2Title: "Tema 2",
     unit2Desc: "Infraestructura global, IAM, EC2 i seguretat de xarxa",
+    unit3Title: "Tema 3",
+    unit3Desc: "Xarxes virtuals, NAT, Elastic IP i Lambda",
     backUnits: "Canviar d'unitat",
     pickTopics: "Triem els temes del Tema {unit}",
     pickTopicsDesc: "Selecciona els temes que vols practicar. Es generaran les preguntes dels temes escollits.",
@@ -88,6 +90,8 @@ const UI = {
     unit1Desc: "La nube, modelos de servicio y AWS",
     unit2Title: "Tema 2",
     unit2Desc: "Infraestructura global, IAM, EC2 y seguridad de red",
+    unit3Title: "Tema 3",
+    unit3Desc: "Redes virtuales, NAT, Elastic IP y Lambda",
     backUnits: "Cambiar de unidad",
     pickTopics: "Elegimos los temas del Tema {unit}",
     pickTopicsDesc: "Selecciona los temas que quieres practicar. Se generarán las preguntas de los temas elegidos.",
@@ -143,7 +147,8 @@ function optionText(opt) {
 
 const UNITS = [
   { id: 1, emoji: "☁️", titleKey: "unit1Title", descKey: "unit1Desc" },
-  { id: 2, emoji: "🌐", titleKey: "unit2Title", descKey: "unit2Desc" }
+  { id: 2, emoji: "🌐", titleKey: "unit2Title", descKey: "unit2Desc" },
+  { id: 3, emoji: "🔐", titleKey: "unit3Title", descKey: "unit3Desc" }
 ];
 
 function unitQuestions(unit) {
